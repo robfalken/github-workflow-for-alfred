@@ -1,0 +1,6 @@
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
