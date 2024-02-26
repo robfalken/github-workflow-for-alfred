@@ -18,9 +18,35 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
     REPO = { path: "icons/repo.svg" }.freeze
     FILE = { path: "icons/file.svg" }.freeze
     CLIPBOARD = { path: "icons/clipboard.svg" }.freeze
+    EMPTY = { path: "icons/draft.svg" }.freeze
   end
 
   class << self # rubocop:disable Metrics/ClassLength
+    NO_OPERATION = {
+
+      uid: nil,
+      arg: nil,
+      subtitle: "Modifier has no action",
+      valid: false,
+      icon: Icon::EMPTY,
+    }.freeze
+
+    BASE_MODS = {
+      shift: NO_OPERATION,
+      alt: NO_OPERATION,
+      cmd: NO_OPERATION,
+      ctrl: NO_OPERATION,
+      "ctrl+alt": NO_OPERATION,
+      "ctrl+cmd": NO_OPERATION,
+      "shift+alt": NO_OPERATION,
+      "shift+cmd": NO_OPERATION,
+      "shift+ctrl": NO_OPERATION,
+      "alt+cmd": NO_OPERATION,
+      "shift+alt+cmd": NO_OPERATION,
+      "ctrl+alt+cmd": NO_OPERATION,
+      "ctrl+alt+shift+cmd": NO_OPERATION,
+    }.freeze
+
     def issues(issue)
       browser_url = issue["html_url"]
       id = issue["id"]
@@ -40,6 +66,16 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           action: Action::BROWSER,
         },
         icon: Icon::ISSUE,
+        mods: BASE_MODS.merge({
+          ctrl: {
+            arg: num_with_hashtag(issue),
+            subtitle: "Clipboard: Copy issue number: #{num_with_hashtag(issue)}",
+            variables: {
+              action: Action::CLIPBOARD,
+            },
+            icon: Icon::CLIPBOARD,
+          },
+        }),
       }
     end
 
@@ -58,6 +94,16 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
         variables: {
           action: Action::BROWSER,
         },
+        mods: BASE_MODS.merge({
+          ctrl: {
+            arg: filename,
+            subtitle: "Clipboard: Copy file path: #{filename}",
+            variables: {
+              action: Action::CLIPBOARD,
+            },
+            icon: Icon::CLIPBOARD,
+          },
+        }),
         icon: Icon::FILE,
       }
     end
@@ -78,16 +124,16 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           action: Action::BROWSER,
         },
         icon: Icon::COMMIT,
-        mods: {
+        mods: BASE_MODS.merge({
           ctrl: {
             arg: sha,
             variables: {
               action: Action::CLIPBOARD,
             },
-            subtitle: "Copy commit sha to clipboard: #{sha}",
+            subtitle: "Clipboard: Copy commit SHA: #{sha}",
             icon: Icon::CLIPBOARD,
           },
-        },
+        }),
       }
     end
 
@@ -108,10 +154,10 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           action: Action::BROWSER,
         },
         icon: Icon::PR,
-        mods: {
+        mods: BASE_MODS.merge({
           ctrl: {
             arg: num_with_hashtag(pull),
-            subtitle: "Copy PR number to clipboard: #{num_with_hashtag(pull)}",
+            subtitle: "Clipboard: Copy PR number: #{num_with_hashtag(pull)}",
             variables: {
               action: Action::CLIPBOARD,
             },
@@ -119,7 +165,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           },
           alt: {
             arg: "#{browser_url}/commits",
-            subtitle: "Go to commits for #{num_with_hashtag(pull)} in the browser",
+            subtitle: "Browser: View commits in #{num_with_hashtag(pull)} on GitHub",
             variables: {
               action: Action::BROWSER,
             },
@@ -127,29 +173,29 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           },
           cmd: {
             arg: "#{browser_url}/files",
-            subtitle: "Go to diff for #{num_with_hashtag(pull)} in the browser",
+            subtitle: "Browser: View diff in #{num_with_hashtag(pull)} on GitHub",
             variables: {
               action: Action::BROWSER,
             },
             icon: Icon::DIFF,
           },
-          "shift+alt" => {
+          "shift+alt": {
             arg: "#{api_url}/commits",
-            subtitle: "List commits in #{num_with_hashtag(pull)} in Alfred",
+            subtitle: "Alfred: List commits in #{num_with_hashtag(pull)}",
             variables: {
               action: Action::API,
             },
             icon: Icon::COMMIT,
           },
-          "shift+cmd" => {
+          "shift+cmd": {
             arg: "#{api_url}/files",
+            subtitle: "Alfred: List files in #{num_with_hashtag(pull)}",
             variables: {
               action: Action::API,
             },
-            subtitle: "List files in #{num_with_hashtag(pull)} in Alfred",
             icon: Icon::DIFF,
           },
-        },
+        }),
       }
     end
 
@@ -171,10 +217,18 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           action: Action::BROWSER,
         },
         icon: Icon::REPO,
-        mods: {
+        mods: BASE_MODS.merge({
+          ctrl: {
+            arg: full_name,
+            subtitle: "Clipboard: Copy organization/repository name: #{full_name}",
+            variables: {
+              action: Action::CLIPBOARD,
+            },
+            icon: Icon::CLIPBOARD,
+          },
           alt: {
             arg: "#{browser_url}/issues",
-            subtitle: "Go to issues for #{name} in the browser",
+            subtitle: "Browser: View issues in #{name} on GitHub",
             variables: {
               action: Action::BROWSER,
             },
@@ -182,7 +236,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           },
           cmd: {
             arg: "#{browser_url}/pulls",
-            subtitle: "Go to pull requests for #{name} in the browser",
+            subtitle: "Browser: View pull requests in #{name} on GitHub",
             variables: {
               action: Action::BROWSER,
             },
@@ -190,7 +244,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           },
           "shift+alt": {
             arg: "#{api_url}/issues",
-            subtitle: "List issues for #{name} in Alfred",
+            subtitle: "Alfred: List issues in #{name}",
             variables: {
               action: Action::API,
             },
@@ -198,13 +252,13 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
           },
           "shift+cmd": {
             arg: "#{api_url}/pulls",
-            subtitle: "List pull requests for #{name} in Alfred",
+            subtitle: "Alfred: List pull requests in #{name}",
             variables: {
               action: Action::API,
             },
             icon: Icon::PR,
           },
-        },
+        }),
       }
     end
 
