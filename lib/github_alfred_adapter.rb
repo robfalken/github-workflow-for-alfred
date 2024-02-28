@@ -69,7 +69,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
         mods: BASE_MODS.merge({
           ctrl: {
             arg: num_with_hashtag(issue),
-            subtitle: "Clipboard: Copy issue number: #{num_with_hashtag(issue)}",
+            subtitle: "Copy to clipboard: #{num_with_hashtag(issue)}",
             variables: {
               action: Action::CLIPBOARD,
             },
@@ -97,7 +97,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
         mods: BASE_MODS.merge({
           ctrl: {
             arg: filename,
-            subtitle: "Clipboard: Copy file path: #{filename}",
+            subtitle: "Copy to clipboard: #{filename}",
             variables: {
               action: Action::CLIPBOARD,
             },
@@ -130,7 +130,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
             variables: {
               action: Action::CLIPBOARD,
             },
-            subtitle: "Clipboard: Copy commit SHA: #{sha}",
+            subtitle: "Copy to clipboard: #{sha}",
             icon: Icon::CLIPBOARD,
           },
         }),
@@ -157,7 +157,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
         mods: BASE_MODS.merge({
           ctrl: {
             arg: num_with_hashtag(pull),
-            subtitle: "Clipboard: Copy PR number: #{num_with_hashtag(pull)}",
+            subtitle: "Copy to clipboard: #{num_with_hashtag(pull)}",
             variables: {
               action: Action::CLIPBOARD,
             },
@@ -220,7 +220,7 @@ class GithubAlfredAdapter # rubocop:disable Metrics/ClassLength
         mods: BASE_MODS.merge({
           ctrl: {
             arg: full_name,
-            subtitle: "Clipboard: Copy organization/repository name: #{full_name}",
+            subtitle: "Copy to clipboard: #{full_name}",
             variables: {
               action: Action::CLIPBOARD,
             },
