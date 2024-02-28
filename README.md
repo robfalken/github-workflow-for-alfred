@@ -79,4 +79,7 @@ When pressing the modifier keys, the icon and description will change to describ
 
 ## Demo
 
-![screencast](https://github.com/robfalken/github-workflow-for-alfred/assets/261929/ff129b9d-8147-4cb1-bbc6-a07fd111265a)
+
+
+https://github.com/robfalken/github-workflow-for-alfred/assets/261929/8df145a8-08eb-489e-93e6-a91d4a1155a0
+
