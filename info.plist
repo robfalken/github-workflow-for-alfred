@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string></string>
+	<string>co.robfalken.github.alfredworkflow</string>
 	<key>connections</key>
 	<dict>
 		<key>5BA89C50-168C-4D9C-985C-C6266A0EF765</key>
@@ -155,7 +155,7 @@
 		</array>
 	</dict>
 	<key>createdby</key>
-	<string></string>
+	<string>Rob Falken</string>
 	<key>description</key>
 	<string>Search github repos</string>
 	<key>disabled</key>
@@ -567,6 +567,6 @@ ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</string>
 	<key>version</key>
 	<string></string>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/robfalken/github-workflow-for-alfred</string>
 </dict>
 </plist>
